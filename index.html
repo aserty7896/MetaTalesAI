@@ -1,145 +1,109 @@
+
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetaTalesAI</title>
-    <style>
-        body {
-            background-color: #ffffff;
-            color: #333333;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-        }
-        h1 {
-            margin: 0;
-            color: #0066cc;
-            font-size: 2em;
-        }
-        .lang-switch span {
-            cursor: pointer;
-            margin: 0 5px;
-            color: #0066cc;
-            font-weight: bold;
-        }
-        .lang-switch span:hover {
-            text-decoration: underline;
-        }
-        .description p {
-            font-size: 1.1em;
-            line-height: 1.5em;
-        }
-        .buttons {
-            margin: 20px 0;
-        }
-        .buttons button {
-            background-color: #0066cc;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 1em;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .buttons button:hover {
-            background-color: #005bb5;
-        }
-        .fanfic {
-            margin-top: 20px;
-        }
-        .fanfic h2 {
-            margin: 10px 0;
-            color: #0066cc;
-        }
-        #fanficText {
-            border: 1px solid #cccccc;
-            padding: 10px;
-            min-height: 100px;
-            background-color: #f9f9f9;
-        }
-        [data-lang] {
-            display: none;
-        }
-        body.lang-en [data-lang="en"],
-        body.lang-ru [data-lang="ru"],
-        body.lang-zh [data-lang="zh"] {
-            display: block;
-        }
-        body.lang-en .lang-switch span[data-lang="en"],
-        body.lang-ru .lang-switch span[data-lang="ru"],
-        body.lang-zh .lang-switch span[data-lang="zh"] {
-            text-decoration: underline;
-        }
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5em;
-            }
-            .buttons button {
-                width: 100%;
-                margin: 5px 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaTalesAI - Fanfic Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2E86C1;
+    }
+    .genre-option {
+      margin: 10px 0;
+      padding: 15px;
+      background-color: #eaf2f8;
+      border-left: 4px solid #2E86C1;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .genre-option:hover {
+      background-color: #d6eaf8;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2E86C1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1b4f72;
+    }
+  </style>
 </head>
-<body class="lang-ru">
-    <div class="container">
-        <header>
-            <h1>MetaTalesAI</h1>
-            <div class="lang-switch">
-                <span data-lang="en" onclick="setLang('en')">EN</span> |
-                <span data-lang="ru" onclick="setLang('ru')">RU</span> |
-                <span data-lang="zh" onclick="setLang('zh')">中文</span>
-            </div>
-        </header>
-        <div class="description">
-            <p data-lang="en">MetaTalesAI is an AI-powered fanfiction platform where fans can create and share their own fan stories.</p>
-            <p data-lang="ru">MetaTalesAI — это платформа для фанфиков с поддержкой ИИ, где фанаты могут создавать и делиться собственными фан-историями.</p>
-            <p data-lang="zh">MetaTalesAI 是一个由人工智能驱动的同人小说平台，粉丝可以在这里创作并分享自己的同人故事。</p>
-        </div>
-        <div class="buttons">
-            <button id="generateBtn"><span data-lang="en">Generate Fanfic</span><span data-lang="ru">Сгенерировать фанфик</span><span data-lang="zh">生成同人小说</span></button>
-            <button id="translateBtn"><span data-lang="en">Translate</span><span data-lang="ru">Перевести</span><span data-lang="zh">翻译</span></button>
-            <button id="galleryBtn"><span data-lang="en">Open Gallery</span><span data-lang="ru">Открыть галерею</span><span data-lang="zh">打开画廊</span></button>
-        </div>
-        <div class="fanfic">
-            <h2><span data-lang="en">Example Fanfic</span><span data-lang="ru">Пример фанфика</span><span data-lang="zh">示例同人小说</span></h2>
-            <div id="fanficText" contenteditable="true">
-                <p data-lang="en">The dragon hovered silently above the ancient city, its emerald scales glinting in the moonlight. Talia held her breath as the creature descended, recalling the stories her grandmother told of its power. Tonight, she hoped her courage would be enough to save the kingdom.</p>
-                <p data-lang="ru">Дракон тихо завис над древним городом, его изумрудная чешуя переливалась в лунном свете. Талия задержала дыхание, когда существо спустилось вниз, вспоминая истории, которые бабушка рассказывала о его силе. Этой ночью она надеялась, что ее смелости хватит, чтобы спасти королевство.</p>
-                <p data-lang="zh">巨龙在古老的城池上空静静盘旋，月光下它的翡翠鳞片闪闪发光。塔利亚屏住呼吸，当这生物降落时，她想起了祖母讲述的关于它的力量的故事。今晚，她希望自己的勇气足以拯救王国。</p>
-            </div>
-        </div>
+<body>
+  <div class="container">
+    <h1>MetaTalesAI: AI Fanfic Generator</h1>
+    <p><strong>Select a genre:</strong></p>
+
+    <div class="genre-option" onclick="generateFanfic('apocalypse')">
+      <strong>Apocalypse</strong><br>
+      <em>"After the world burned, silence ruled the land… One soul dares to speak again."</em>
     </div>
-    <script>
-        function setLang(lang) {
-            document.body.className = 'lang-' + lang;
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            var currentLang = document.body.className.split('-')[1];
-            setLang(currentLang);
-        });
-        document.getElementById('generateBtn').addEventListener('click', function() {
-            alert('Feature: Generate a new fanfic (not implemented).');
-        });
-        document.getElementById('translateBtn').addEventListener('click', function() {
-            alert('Feature: Translate the fanfic text (not implemented).');
-        });
-        document.getElementById('galleryBtn').addEventListener('click', function() {
-            alert('Feature: Open gallery (not implemented).');
-        });
-    </script>
+    <div class="genre-option" onclick="generateFanfic('magic')">
+      <strong>Magic & Legends</strong><br>
+      <em>"Wands. Blood. Forbidden spells. And one magician who defied the gods."</em>
+    </div>
+    <div class="genre-option" onclick="generateFanfic('antihero')">
+      <strong>Anti-Hero</strong><br>
+      <em>"He doesn’t save the world. He just survives. And sometimes — breaks it."</em>
+    </div>
+    <div class="genre-option" onclick="generateFanfic('harem')">
+      <strong>Harem Romance</strong><br>
+      <em>"Surrounded by rivals and admirers, can one heart choose its truth?"</em>
+    </div>
+    <div class="genre-option" onclick="generateFanfic('adventure')">
+      <strong>Adventure</strong><br>
+      <em>"Through deserts, mountains, and lost cities — destiny calls the brave."</em>
+    </div>
+
+    <button onclick="generateFanfic('auto')">🎲 Let AI Choose Genre</button>
+
+    <div class="output" id="fanfic-output">
+      <strong>Fanfic will appear here...</strong>
+    </div>
+  </div>
+
+  <script>
+    function generateFanfic(genre) {
+      const output = document.getElementById('fanfic-output');
+      const genres = {
+        apocalypse: 'After the nuclear storm, humanity hides underground. One survivor rises to the surface…',
+        magic: 'In the kingdom of Altherra, spells are currency — and the poor cast none.',
+        antihero: 'He betrayed both sides. Now, hunted by gods and demons, he walks alone.',
+        harem: 'In a world of princesses, priestesses, and assassins — love is war.',
+        adventure: 'When an old map leads to forgotten stars, the crew sets sail through space.',
+        auto: 'Born under a red sky, gifted with cursed power, he is both savior and destroyer.'
+      };
+      const selected = genres[genre] || genres['auto'];
+      output.innerHTML = `<strong>Genre:</strong> ${genre.toUpperCase()}<br><br>${selected}`;
+    }
+  </script>
 </body>
 </html>
